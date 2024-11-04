@@ -37,6 +37,11 @@ Part of the CoalMind machine learning library family, this crate provides effici
 - Balances feature selection and stability
 - Configurable ratio between L1 and L2 penalties
 
+### Polynomial Regression ( In Progress )
+- Extends linear regression by adding polynomial terms of features
+- Captures non-linear relationships between features and target
+- Achieved by transforming features into polynomial features before fitting
+
 ## Usage
 
 Add this to your `Cargo.toml`:
@@ -84,7 +89,7 @@ The `examples/` directory contains:
 
 ## Part of CoalMind
 
-This crate is one of 13 foundational machine learning algorithms implemented in the CoalMind library family. Each implementation focuses on:
+This crate is one of 20 foundational machine learning algorithms implemented in the CoalMind library family. Each implementation focuses on:
 - Clean, idiomatic Rust code
 - Educational value through clear documentation
 - Production-ready performance
