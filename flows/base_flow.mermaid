@@ -1,44 +1,49 @@
-classDiagram
-    class LinearRegressionModel {
-        +Vector coefficients
-        +float intercept
-    }
+flowchart TD
+    subgraph Input["1. Input Data"]
+        A[Features Matrix X] --> |"Each row = one example\nEach column = one feature"| C
+        B[Target Values y] --> |"Values we want to predict"| C
+    end
 
-    class LinearRegressionError {
-        +String message
-    }
+    C[fit function] --> D[Check Dimensions]
+    D -->|"Must match"| E[Center Data]
 
-    class DataProcessing {
-        +center_data()
-        +solve_normal_equation()
-        +calculate_intercept()
-    }
+    subgraph DataPrep["2. Data Preparation"]
+        E --> F[Calculate Feature Means]
+        F --> G[Center Features]
+        G -->|"Subtract means"| H[Calculate Target Mean]
+        H --> I[Center Targets]
+    end
 
-    class PublicAPI {
-        +fit()
-        +predict()
-        +score()
-        +rmse()
-    }
+    subgraph Calculation["3. Normal Equation Solution"]
+        I --> J["Calculate XᵀX\nGram Matrix"]
+        J --> K["Calculate (XᵀX)⁻¹\nMatrix Inverse"]
+        K --> L["Calculate Xᵀy"]
+        L --> M["Get coefficients β\nby (XᵀX)⁻¹(Xᵀy)"]
+    end
 
-    %% Data types
-    class Types {
-        Matrix: DMatrix<f64>
-        Vector: DVector<f64>
-        LinearRegressionResult~T~
-    }
+    subgraph Output["4. Model Creation"]
+        M --> N[Calculate Intercept]
+        N --> O[Create Model]
+        O -->|"Contains coefficients\nand intercept"| P[Return Model]
+    end
 
-    %% Flow diagram
-    PublicAPI --> DataProcessing : uses
-    PublicAPI --> LinearRegressionModel : creates/uses
-    PublicAPI --> LinearRegressionError : may return
-    DataProcessing --> LinearRegressionModel : helps create
-    
-    %% Main workflow
-    note for PublicAPI "Main Workflow:\n1. fit(): X, y → Model\n2. predict(): Model, X → ŷ\n3. score()/rmse(): ŷ, y → metrics"
+    subgraph Prediction["5. Using the Model"]
+        Q[predict function] --> R[Check Dimensions]
+        R --> S["Apply Formula:\ny = Xβ + β₀"]
+        S --> T[Return Predictions]
+    end
 
-    %% Data processing note
-    note for DataProcessing "Internal Process:\n1. Center data\n2. Solve normal equation\n3. Calculate intercept"
+    subgraph Metrics["6. Model Evaluation"]
+        U[R² Score] -->|"Explains variance"| V[Quality Metric]
+        W[RMSE] -->|"Average error"| V
+    end
 
-    %% Model note
-    note for LinearRegressionModel "Stores:\n- Feature coefficients (β)\n- Intercept term (β₀)"
+    style Input fill:#e1f5fe
+    style DataPrep fill:#f3e5f5
+    style Calculation fill:#fff3e0
+    style Output fill:#e8f5e9
+    style Prediction fill:#fce4ec
+    style Metrics fill:#f1f8e9
+
+    classDef important fill:#ffd700,stroke:#ff6b6b
+    class K,S important

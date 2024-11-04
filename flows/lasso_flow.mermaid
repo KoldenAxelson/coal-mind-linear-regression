@@ -1,50 +1,46 @@
-classDiagram
-    %% Base classes (imported)
-    class LinearRegressionModel {
-        +Vector coefficients
-        +float intercept
-    }
+flowchart TD
+    subgraph Input["1. Input Data"]
+        A[Features Matrix X] --> |"Each row = one example\nEach column = one feature"| C
+        B[Target Values y] --> |"Values to predict"| C
+        P[Alpha α] --> |"Controls sparsity:\nHigher = more zeros"| C
+    end
 
-    class LinearRegressionError {
-        +String message
-    }
+    C[fit function] --> D{Is α = 0?}
+    
+    D -->|"Yes"| E[Use regular linear regression]
+    D -->|"No"| F[Standardize Data]
+    
+    subgraph Standardization["2. Data Preparation"]
+        F --> G[Center Features]
+        G -->|"Subtract mean"| H[Scale Features]
+        H -->|"Divide by std dev"| I[Center Targets]
+    end
+    
+    subgraph Optimization["3. Coordinate Descent"]
+        I --> J["Initialize β = 0"]
+        J --> K["For each feature j:"]
+        K --> L["Calculate Partial Residual\nr = y - Xβ + xⱼβⱼ"]
+        L --> M["Apply Soft Thresholding\nS(z, α) = sign(z)max(|z|-α, 0)"]
+        M --> N["Update βⱼ"]
+        N -->|"Until convergence"| K
+    end
+    
+    subgraph Output["4. Final Model"]
+        N --> O[Rescale Coefficients]
+        O --> P1[Calculate Intercept]
+        P1 --> Q[Return Model]
+    end
 
-    %% Lasso-specific components
-    class LassoOptimization {
-        +soft_threshold(z, gamma)
-        +standardize_data()
-    }
+    subgraph KeyFeature["What Makes Lasso Special"]
+        R["Soft Thresholding"] -->|"Can make coefficients\nexactly zero"| S["Feature Selection"]
+        S -->|"Identifies important\nfeatures"| T["Sparse Solutions"]
+    end
 
-    class CoordinateDescent {
-        +initialize_beta()
-        +update_coefficients()
-        +check_convergence()
-    }
+    style Input fill:#e1f5fe
+    style Standardization fill:#f3e5f5
+    style Optimization fill:#fff3e0
+    style Output fill:#e8f5e9
+    style KeyFeature fill:#ffebee
 
-    class LassoParameters {
-        +float alpha
-        +int max_iter
-        +float tol
-    }
-
-    %% Main public interface
-    class LassoAPI {
-        +fit(features, targets, alpha, max_iter, tol)
-    }
-
-    %% Relationships
-    LassoAPI --> LassoOptimization : uses
-    LassoAPI --> CoordinateDescent : implements
-    LassoAPI --> LinearRegressionModel : creates
-    LassoAPI --> LinearRegressionError : may return
-    LassoAPI --> LassoParameters : requires
-    CoordinateDescent --> LassoOptimization : uses soft_threshold
-
-    %% Mathematical notes
-    note for LassoOptimization "Key Operations:\n1. Standardize features\n2. Center targets\n3. Soft thresholding\nS(z,γ) = sign(z)max(|z|-γ,0)"
-
-    note for CoordinateDescent "Algorithm:\n1. Initialize β=0\n2. For each feature j:\n   - Compute partial residual\n   - Update βⱼ via soft threshold\n3. Repeat until convergence"
-
-    note for LassoParameters "Controls:\n- α: regularization strength\n- max_iter: iteration limit\n- tol: convergence tolerance"
-
-    note for LassoAPI "Objective Function:\nmin (1/2n)||y-Xβ||² + α||β||₁\n- Sparse solutions\n- Feature selection\n- L1 regularization"
+    classDef important fill:#ffd700,stroke:#ff6b6b
+    class P,M important

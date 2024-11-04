@@ -1,0 +1,59 @@
+flowchart TD
+    subgraph Input["1. Input Data"]
+        A[Features Matrix X] --> C
+        B[Target Values y] --> C
+        L1[Alpha α] -->|"Controls overall\nregularization strength"| C
+        L2[l1_ratio ρ] -->|"Balances L1 vs L2\n0=Ridge, 1=Lasso"| C
+    end
+
+    C[fit function] --> D{Are α and ρ = 0?}
+    
+    D -->|"Yes"| E[Use regular linear regression]
+    D -->|"No"| F[Standardize Data]
+    
+    subgraph Standardization["2. Data Preparation"]
+        F --> G[Center Features]
+        G --> H[Scale Features]
+        H --> I[Center Targets]
+    end
+    
+    subgraph Optimization["3. Combined Regularization"]
+        I --> J["Initialize β = 0"]
+        J --> K["For each feature j:"]
+        
+        subgraph InnerLoop["Coordinate Descent Step"]
+            K --> L["Calculate Partial Residual\nr = y - Xβ + xⱼβⱼ"]
+            L --> M["Apply Combined Update:"]
+            M --> N1["1. L1 Soft Thresholding\nLasso component: ρα"]
+            M --> N2["2. L2 Shrinkage\nRidge component: (1-ρ)α"]
+            N1 --> O[Combine Effects]
+            N2 --> O
+        end
+        
+        O --> P["Update βⱼ"]
+        P -->|"Until convergence"| K
+    end
+    
+    subgraph Output["4. Final Model"]
+        P --> Q[Rescale Coefficients]
+        Q --> R[Calculate Intercept]
+        R --> S[Return Model]
+    end
+
+    subgraph Benefits["Key Advantages"]
+        T["Group Selection"] -->|"Handles correlated\nfeatures better\nthan Lasso"| V
+        U["Variable Selection"] -->|"Can eliminate\nfeatures like\nLasso"| V
+        V["Best of Both Worlds"]
+        V -->|"Ridge-like stability"| W["Robust Solution"]
+        V -->|"Lasso-like sparsity"| W
+    end
+
+    style Input fill:#e1f5fe
+    style Standardization fill:#f3e5f5
+    style Optimization fill:#fff3e0
+    style Output fill:#e8f5e9
+    style Benefits fill:#ffebee
+    style InnerLoop fill:#fff3e0,stroke:#ff7043,stroke-width:2px
+
+    classDef important fill:#ffd700,stroke:#ff6b6b
+    class L1,L2,O important
