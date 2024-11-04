@@ -1,8 +1,8 @@
 flowchart TD
     subgraph Input["1. Input Data"]
-        A[Features Matrix X] --> |"Each row = one example\nEach column = one feature"| C
+        A[Features Matrix X] --> |"Each row = one example<br>Each column = one feature"| C
         B[Target Values y] --> |"Values to predict"| C
-        P[Alpha α] --> |"Controls sparsity:\nHigher = more zeros"| C
+        P[Alpha α] --> |"Controls sparsity:<br>Higher = more zeros"| C
     end
 
     C[fit function] --> D{Is α = 0?}
@@ -19,8 +19,8 @@ flowchart TD
     subgraph Optimization["3. Coordinate Descent"]
         I --> J["Initialize β = 0"]
         J --> K["For each feature j:"]
-        K --> L["Calculate Partial Residual\nr = y - Xβ + xⱼβⱼ"]
-        L --> M["Apply Soft Thresholding\nS(z, α) = sign(z)max(|z|-α, 0)"]
+        K --> L["Calculate Partial Residual<br>r = y - Xβ + xⱼβⱼ"]
+        L --> M["Apply Soft Thresholding<br>S(z, α) = sign(z)max(|z|-α, 0)"]
         M --> N["Update βⱼ"]
         N -->|"Until convergence"| K
     end
@@ -32,8 +32,8 @@ flowchart TD
     end
 
     subgraph KeyFeature["What Makes Lasso Special"]
-        R["Soft Thresholding"] -->|"Can make coefficients\nexactly zero"| S["Feature Selection"]
-        S -->|"Identifies important\nfeatures"| T["Sparse Solutions"]
+        R["Soft Thresholding"] -->|"Can make coefficients<br>exactly zero"| S["Feature Selection"]
+        S -->|"Identifies important<br>features"| T["Sparse Solutions"]
     end
 
     style Input fill:#e1f5fe

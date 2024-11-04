@@ -2,8 +2,8 @@ flowchart TD
     subgraph Input["1. Input Data"]
         A[Features Matrix X] --> C
         B[Target Values y] --> C
-        L1[Alpha α] -->|"Controls overall\nregularization strength"| C
-        L2[l1_ratio ρ] -->|"Balances L1 vs L2\n0=Ridge, 1=Lasso"| C
+        L1[Alpha α] -->|"Controls overall<br>regularization strength"| C
+        L2[l1_ratio ρ] -->|"Balances L1 vs L2<br>0=Ridge, 1=Lasso"| C
     end
 
     C[fit function] --> D{Are α and ρ = 0?}
@@ -22,10 +22,10 @@ flowchart TD
         J --> K["For each feature j:"]
         
         subgraph InnerLoop["Coordinate Descent Step"]
-            K --> L["Calculate Partial Residual\nr = y - Xβ + xⱼβⱼ"]
+            K --> L["Calculate Partial Residual<br>r = y - Xβ + xⱼβⱼ"]
             L --> M["Apply Combined Update:"]
-            M --> N1["1. L1 Soft Thresholding\nLasso component: ρα"]
-            M --> N2["2. L2 Shrinkage\nRidge component: (1-ρ)α"]
+            M --> N1["1. L1 Soft Thresholding<br>Lasso component: ρα"]
+            M --> N2["2. L2 Shrinkage<br>Ridge component: (1-ρ)α"]
             N1 --> O[Combine Effects]
             N2 --> O
         end
@@ -41,8 +41,8 @@ flowchart TD
     end
 
     subgraph Benefits["Key Advantages"]
-        T["Group Selection"] -->|"Handles correlated\nfeatures better\nthan Lasso"| V
-        U["Variable Selection"] -->|"Can eliminate\nfeatures like\nLasso"| V
+        T["Group Selection"] -->|"Handles correlated<br>features better<br>than Lasso"| V
+        U["Variable Selection"] -->|"Can eliminate<br>features like<br>Lasso"| V
         V["Best of Both Worlds"]
         V -->|"Ridge-like stability"| W["Robust Solution"]
         V -->|"Lasso-like sparsity"| W

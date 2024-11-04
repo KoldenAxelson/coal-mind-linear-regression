@@ -1,8 +1,8 @@
 flowchart TD
     subgraph Input["1. Input Data"]
-        A[Features Matrix X] --> |"Each row = one example\nEach column = one feature"| C
+        A[Features Matrix X] --> |"Each row = one example<br>Each column = one feature"| C
         B[Target Values y] --> |"What we want to predict"| C
-        P[Alpha α] --> |"Controls how much we\nwant to shrink coefficients"| C
+        P[Alpha α] --> |"Controls how much we<br>want to shrink coefficients"| C
     end
 
     C[fit function] --> D{Is α = 0?}
@@ -19,7 +19,7 @@ flowchart TD
     
     subgraph RidgeCalc["3. Ridge Regression Calculation"]
         J --> K["Calculate (XᵀX + αI)"]
-        K -->|"Add α to diagonal\nfor regularization"| L[Solve Equation]
+        K -->|"Add α to diagonal<br>for regularization"| L[Solve Equation]
         L -->|"Get coefficients β"| M[Transform Back]
     end
     

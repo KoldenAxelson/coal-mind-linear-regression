@@ -1,6 +1,6 @@
 flowchart TD
     subgraph Input["1. Input Data"]
-        A[Features Matrix X] --> |"Each row = one example\nEach column = one feature"| C
+        A[Features Matrix X] --> |"Each row = one example<br>Each column = one feature"| C
         B[Target Values y] --> |"Values we want to predict"| C
     end
 
@@ -15,21 +15,21 @@ flowchart TD
     end
 
     subgraph Calculation["3. Normal Equation Solution"]
-        I --> J["Calculate XᵀX\nGram Matrix"]
-        J --> K["Calculate (XᵀX)⁻¹\nMatrix Inverse"]
+        I --> J["Calculate XᵀX<br>Gram Matrix"]
+        J --> K["Calculate (XᵀX)⁻¹<br>Matrix Inverse"]
         K --> L["Calculate Xᵀy"]
-        L --> M["Get coefficients β\nby (XᵀX)⁻¹(Xᵀy)"]
+        L --> M["Get coefficients β<br>by (XᵀX)⁻¹(Xᵀy)"]
     end
 
     subgraph Output["4. Model Creation"]
         M --> N[Calculate Intercept]
         N --> O[Create Model]
-        O -->|"Contains coefficients\nand intercept"| P[Return Model]
+        O -->|"Contains coefficients<br>and intercept"| P[Return Model]
     end
 
     subgraph Prediction["5. Using the Model"]
         Q[predict function] --> R[Check Dimensions]
-        R --> S["Apply Formula:\ny = Xβ + β₀"]
+        R --> S["Apply Formula:<br>y = Xβ + β₀"]
         S --> T[Return Predictions]
     end
 
