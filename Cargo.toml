@@ -2,13 +2,27 @@
 name = "coal-mind-linear-regression"
 version = "0.1.0"
 edition = "2021"
+authors = ["Kolden Axelson"]
+description = "A linear regression implementation in Rust"
+license = "MIT"
+repository = ""
+keywords = ["machine-learning", "statistics", "regression", "linear-algebra"]
+categories = ["science", "mathematics"]
 
+# Main dependencies
 [dependencies]
 nalgebra = "0.32"
 
+# Development & testing dependencies
 [dev-dependencies]
-# criterion = "0.5"
+criterion = "0.5"  # for benchmarking when ready
 
+# Test configuration
+[[test]]
+name = "basic_test"
+path = "tests/basic_test.rs"
+
+# Benchmark configuration (commented until needed)
 # [[bench]]
-# name = "benchmarks"
+# name = "regression_benchmarks"
 # harness = false
