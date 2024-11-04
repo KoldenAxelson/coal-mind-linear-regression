@@ -10,7 +10,14 @@ fn test_perfect_linear_relationship() {
     let targets = Vector::from_vec(vec![2.0, 4.0, 6.0]);
 
     let model = base::fit(&features, &targets).unwrap();
+
+    // Model should have 1 coefficient (1 feature)
+    assert_eq!(model.coefficients.len(), 1);
+
     let predictions = base::predict(&model, &features).unwrap();
+
+    // Predictions should have same length as targets
+    assert_eq!(predictions.len(), targets.len());
 
     let expected = Vector::from_vec(vec![2.0, 4.0, 6.0]);
     assert!((predictions - expected).norm() < 1e-10);
@@ -77,8 +84,16 @@ fn test_noisy_linear_fit() {
 /// Tests multivariate regression (multiple features)
 #[test]
 fn test_multivariate_regression() {
-    let features = Matrix::from_vec(3, 2, vec![1.0, 1.0, 2.0, 1.0, 1.0, 2.0]);
-    let targets = Vector::from_vec(vec![2.0, 3.0, 3.0]); // y ≈ x1 + x2
+    let features = Matrix::from_vec(
+        3,
+        2,
+        vec![
+            1.0, 0.0, // First sample
+            2.0, 1.0, // Second sample
+            1.0, 2.0, // Third sample
+        ],
+    );
+    let targets = Vector::from_vec(vec![2.0, 4.0, 5.0]); // y ≈ x1 + 1.5x2
 
     let model = base::fit(&features, &targets).unwrap();
     let predictions = base::predict(&model, &features).unwrap();

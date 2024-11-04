@@ -22,6 +22,10 @@ criterion = "0.5"  # for benchmarking when ready
 name = "basic_test"
 path = "tests/basic_test.rs"
 
+[[test]]
+name = "lasso_test"
+path = "tests/lasso_test.rs"
+
 # Benchmark configuration (commented until needed)
 # [[bench]]
 # name = "regression_benchmarks"
