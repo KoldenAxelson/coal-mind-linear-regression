@@ -30,6 +30,10 @@ path = "tests/lasso_test.rs"
 name = "ridge_test"
 path = "tests/ridge_test.rs"
 
+[[test]]
+name = "elastic_net_test"
+path = "tests/elastic_net_test.rs"
+
 # Benchmark configuration (commented until needed)
 # [[bench]]
 # name = "regression_benchmarks"

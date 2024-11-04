@@ -35,7 +35,7 @@ use crate::base::{
 ///
 /// # Returns
 /// * Thresholded value according to the soft-thresholding rule
-fn soft_threshold(z: f64, gamma: f64) -> f64 {
+pub(crate) fn soft_threshold(z: f64, gamma: f64) -> f64 {
     if z > gamma {
         z - gamma
     } else if z < -gamma {

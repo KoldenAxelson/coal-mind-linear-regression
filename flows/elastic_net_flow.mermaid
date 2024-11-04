@@ -6,15 +6,15 @@ flowchart TD
         L2[l1_ratio ρ] -->|"Balances L1 vs L2<br>0=Ridge, 1=Lasso"| C
     end
 
-    C[fit function] --> D{Are α and ρ = 0?}
+    C[fit function] --> D{"Is α = 0 or<br>ρ outside [0,1]?"}
     
     D -->|"Yes"| E[Use regular linear regression]
     D -->|"No"| F[Standardize Data]
     
     subgraph Standardization["2. Data Preparation"]
-        F --> G[Center Features]
-        G --> H[Scale Features]
-        H --> I[Center Targets]
+        F --> G["Center Features<br>x = x - mean(x)"]
+        G --> H["Scale Features<br>x = x / std(x)"]
+        H --> I["Center Targets<br>y = y - mean(y)"]
     end
     
     subgraph Optimization["3. Combined Regularization"]
@@ -23,21 +23,21 @@ flowchart TD
         
         subgraph InnerLoop["Coordinate Descent Step"]
             K --> L["Calculate Partial Residual<br>r = y - Xβ + xⱼβⱼ"]
-            L --> M["Apply Combined Update:"]
-            M --> N1["1. L1 Soft Thresholding<br>Lasso component: ρα"]
-            M --> N2["2. L2 Shrinkage<br>Ridge component: (1-ρ)α"]
-            N1 --> O[Combine Effects]
-            N2 --> O
+            L --> M["Calculate Feature Stats:<br>1. x_j_sq = xⱼᵀxⱼ/n<br>2. r_x_j = rᵀxⱼ/n"]
+            M --> N["Apply Combined Update:"]
+            N --> N1["1. Ridge Update<br>β = r_x_j/(x_j_sq + L2)"]
+            N1 --> N2["2. Lasso Threshold<br>β = soft_threshold(β, L1/x_j_sq)"]
         end
         
-        O --> P["Update βⱼ"]
-        P -->|"Until convergence"| K
+        N2 --> P["Check Convergence:<br>||β - β_old|| < tol?"]
+        P -->|"No"| K
+        P -->|"Yes"| Q
     end
     
     subgraph Output["4. Final Model"]
-        P --> Q[Rescale Coefficients]
-        Q --> R[Calculate Intercept]
-        R --> S[Return Model]
+        Q["Rescale Coefficients<br>β = β/std(x)"]
+        Q --> R["Calculate Intercept<br>β₀ = mean(y) - mean(x)ᵀβ"]
+        R --> S["Return Model:<br>{coefficients: β,<br>intercept: β₀}"]
     end
 
     subgraph Benefits["Key Advantages"]
@@ -56,4 +56,4 @@ flowchart TD
     style InnerLoop fill:#fff3e0,stroke:#ff7043,stroke-width:2px
 
     classDef important fill:#ffd700,stroke:#ff6b6b
-    class L1,L2,O important
+    class L1,L2,N important

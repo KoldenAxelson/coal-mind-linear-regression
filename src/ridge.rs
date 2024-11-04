@@ -41,7 +41,10 @@ use crate::base::{
 ///   - Feature standard deviations vector
 ///   - Target mean
 ///   - Centered target vector
-fn standardize_data(features: &Matrix, targets: &Vector) -> (Matrix, Vector, Vector, f64, Vector) {
+pub(crate) fn standardize_data(
+    features: &Matrix,
+    targets: &Vector,
+) -> (Matrix, Vector, Vector, f64, Vector) {
     let n_samples = features.nrows();
     let n_features = features.ncols();
 
