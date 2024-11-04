@@ -15,7 +15,10 @@ nalgebra = "0.32"
 
 # Development & testing dependencies
 [dev-dependencies]
-criterion = "0.5"  # for benchmarking when ready
+criterion = { version = "0.5", features = ["html_reports"] }   # for benchmarking when ready
+plotters = "0.3"                                               # Added for visualization
+rand = "0.8"                                                   # Added for generating sample data
+rand_distr = "0.4"                                             # Added for normal distribution
 
 # Test configuration
 [[test]]
@@ -34,7 +37,25 @@ path = "tests/ridge_test.rs"
 name = "elastic_net_test"
 path = "tests/elastic_net_test.rs"
 
-# Benchmark configuration (commented until needed)
-# [[bench]]
-# name = "regression_benchmarks"
-# harness = false
+# Example List
+[[example]]
+name = "basic_example"
+path = "examples/basic_example.rs"
+
+[[example]]
+name = "lasso_example"
+path = "examples/lasso_example.rs"
+
+[[example]]
+name = "ridge_example"
+path = "examples/ridge_example.rs"
+
+[[example]]
+name = "elastic_net_example"
+path = "examples/elastic_net_example.rs"
+
+# Benchmark Configuration 
+[[bench]]
+name = "regression_benchmarks"
+path = "benches/benchmarks.rs"
+harness = false
