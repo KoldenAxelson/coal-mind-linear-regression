@@ -1,0 +1,44 @@
+classDiagram
+    class LinearRegressionModel {
+        +Vector coefficients
+        +float intercept
+    }
+
+    class LinearRegressionError {
+        +String message
+    }
+
+    class DataProcessing {
+        +center_data()
+        +solve_normal_equation()
+        +calculate_intercept()
+    }
+
+    class PublicAPI {
+        +fit()
+        +predict()
+        +score()
+        +rmse()
+    }
+
+    %% Data types
+    class Types {
+        Matrix: DMatrix<f64>
+        Vector: DVector<f64>
+        LinearRegressionResult~T~
+    }
+
+    %% Flow diagram
+    PublicAPI --> DataProcessing : uses
+    PublicAPI --> LinearRegressionModel : creates/uses
+    PublicAPI --> LinearRegressionError : may return
+    DataProcessing --> LinearRegressionModel : helps create
+    
+    %% Main workflow
+    note for PublicAPI "Main Workflow:\n1. fit(): X, y → Model\n2. predict(): Model, X → ŷ\n3. score()/rmse(): ŷ, y → metrics"
+
+    %% Data processing note
+    note for DataProcessing "Internal Process:\n1. Center data\n2. Solve normal equation\n3. Calculate intercept"
+
+    %% Model note
+    note for LinearRegressionModel "Stores:\n- Feature coefficients (β)\n- Intercept term (β₀)"

@@ -1,0 +1,50 @@
+classDiagram
+    %% Base classes (imported)
+    class LinearRegressionModel {
+        +Vector coefficients
+        +float intercept
+    }
+
+    class LinearRegressionError {
+        +String message
+    }
+
+    %% Lasso-specific components
+    class LassoOptimization {
+        +soft_threshold(z, gamma)
+        +standardize_data()
+    }
+
+    class CoordinateDescent {
+        +initialize_beta()
+        +update_coefficients()
+        +check_convergence()
+    }
+
+    class LassoParameters {
+        +float alpha
+        +int max_iter
+        +float tol
+    }
+
+    %% Main public interface
+    class LassoAPI {
+        +fit(features, targets, alpha, max_iter, tol)
+    }
+
+    %% Relationships
+    LassoAPI --> LassoOptimization : uses
+    LassoAPI --> CoordinateDescent : implements
+    LassoAPI --> LinearRegressionModel : creates
+    LassoAPI --> LinearRegressionError : may return
+    LassoAPI --> LassoParameters : requires
+    CoordinateDescent --> LassoOptimization : uses soft_threshold
+
+    %% Mathematical notes
+    note for LassoOptimization "Key Operations:\n1. Standardize features\n2. Center targets\n3. Soft thresholding\nS(z,γ) = sign(z)max(|z|-γ,0)"
+
+    note for CoordinateDescent "Algorithm:\n1. Initialize β=0\n2. For each feature j:\n   - Compute partial residual\n   - Update βⱼ via soft threshold\n3. Repeat until convergence"
+
+    note for LassoParameters "Controls:\n- α: regularization strength\n- max_iter: iteration limit\n- tol: convergence tolerance"
+
+    note for LassoAPI "Objective Function:\nmin (1/2n)||y-Xβ||² + α||β||₁\n- Sparse solutions\n- Feature selection\n- L1 regularization"

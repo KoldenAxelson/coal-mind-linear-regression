@@ -7,12 +7,12 @@ coal-mind-linear-regression/
 ├── src/
 │   ├── lib.rs                   # Library
 │   ├── base.rs                  # [X] Basic Linear Regression
-|   ├── lasso.rs                 # [ ] L1 Linear Regression
+|   ├── lasso.rs                 # [X] L1 Linear Regression
 |   ├── ridge.rs                 # [ ] L2 Linear Regression
 |   └── elastic_net.rs           # [ ] L1 & L2 Linear Regression
 ├── tests/
 │   ├── basic_test.rs            # [X] Basic Linear Regression Integration Testing
-|   ├── lasso_test.rs            # [ ] L1 Linear Regression Integration Testing
+|   ├── lasso_test.rs            # [X] L1 Linear Regression Integration Testing
 |   ├── ridge_test.rs            # [ ] L2 Linear Regression Integration Testing
 |   └── elastic_net_test.rs      # [ ] L1 & L2 Linear Regression Integration Testing
 ├── benches/               
